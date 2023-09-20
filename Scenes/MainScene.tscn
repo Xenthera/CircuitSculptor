@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://bkwtslfefmlqd"]
+[gd_scene load_steps=11 format=3 uid="uid://bkwtslfefmlqd"]
 
 [ext_resource type="Texture2D" uid="uid://b0p4l6pfdr5go" path="res://Textures/Dark/texture_13.png" id="1_usvci"]
+[ext_resource type="Script" path="res://Scripts/WorldMouse.cs" id="2_7todm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_a1yxl"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -23,8 +24,9 @@ size = Vector3(1000, 1, 1000)
 albedo_texture = ExtResource("1_usvci")
 metallic = 0.38
 metallic_specular = 0.0
-roughness = 0.48
-uv1_scale = Vector3(1500, 1000, 1)
+roughness = 0.42
+roughness_texture_channel = 4
+uv1_triplanar = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_83mve"]
 material = SubResource("StandardMaterial3D_qj57s")
@@ -56,6 +58,7 @@ skeleton = NodePath("../../..")
 
 [node name="Cube" type="RigidBody3D" parent="."]
 transform = Transform3D(0.700349, 0, 0.713801, -0.595723, 0.550889, 0.584496, -0.393225, -0.834579, 0.385814, 0, 3.05269, 0)
+collision_layer = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cube"]
 shape = SubResource("BoxShape3D_1v2sx")
@@ -64,13 +67,22 @@ shape = SubResource("BoxShape3D_1v2sx")
 mesh = SubResource("BoxMesh_0moxf")
 
 [node name="Cube2" type="RigidBody3D" parent="."]
-transform = Transform3D(0.700349, 0, 0.713801, -0.595723, 0.550889, 0.584496, -0.393225, -0.834579, 0.385814, 0, 4.85332, -0.300743)
+transform = Transform3D(0.700349, 0, 0.713801, -0.595723, 0.550889, 0.584496, -0.393225, -0.834579, 0.385814, 0, 3.05269, 0)
+collision_layer = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Cube2"]
 shape = SubResource("BoxShape3D_1v2sx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Cube2"]
+layers = 2
 mesh = SubResource("BoxMesh_0moxf")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.03388, 3.77221)
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 0.843673, 0.536858, 0, -0.536858, 0.843673, 0, 4.62728, 6.08718)
+cull_mask = 1048574
+script = ExtResource("2_7todm")
+target = NodePath("../Cube2")
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.03388, -3.77221)
+collision_mask = 2
