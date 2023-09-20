@@ -1,3 +1,30 @@
-[gd_scene format=3 uid="uid://bkwtslfefmlqd"]
+[gd_scene load_steps=5 format=3 uid="uid://bkwtslfefmlqd"]
 
-[node name="Node3D" type="Node3D"]
+[ext_resource type="Texture2D" uid="uid://b0p4l6pfdr5go" path="res://Textures/Dark/texture_13.png" id="1_usvci"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ruhq2"]
+size = Vector3(1000, 1, 1000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qj57s"]
+albedo_texture = ExtResource("1_usvci")
+metallic = 0.38
+metallic_specular = 0.0
+roughness = 0.48
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_83mve"]
+material = SubResource("StandardMaterial3D_qj57s")
+size = Vector3(1000, 1, 1000)
+
+[node name="MainScene" type="Node3D"]
+
+[node name="Ground" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+shape = SubResource("BoxShape3D_ruhq2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground/StaticBody3D"]
+mesh = SubResource("BoxMesh_83mve")
+skeleton = NodePath("../../..")
